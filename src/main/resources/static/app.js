@@ -55,11 +55,11 @@ app.controller('MovieCRUDCtrl', ['$scope','MovieCRUDService','$mdToast','$window
     $scope.clearMovie();
 
     $scope.openTabXML = function (id) {
-        $window.open('http://localhost:8080/movies/'+id, '_blank');
+        $window.open('http://localhost:8080/movies/'+id+'?mediaType=xml', '_blank');
     };
 
     $scope.openTabJSON = function (id) {
-        $window.open('http://localhost:8080/movies/'+id, '_blank');
+        $window.open('http://localhost:8080/movies/'+id+'?mediaType=json', '_blank');
     };
 
     $scope.addActor = function(){
