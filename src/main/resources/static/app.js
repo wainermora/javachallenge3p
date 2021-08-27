@@ -16,7 +16,8 @@ app.config(function($mdDateLocaleProvider) {
     };
 });
 
-app.controller('MovieCRUDCtrl', ['$scope','MovieCRUDService','$mdToast', function ($scope,MovieCRUDService,$mdToast) {
+app.controller('MovieCRUDCtrl', ['$scope','MovieCRUDService','$mdToast','$window',
+        function ($scope,MovieCRUDService,$mdToast,$window) {
     let stompClient = null;
     $scope.genres = [];
     $scope.languajes = [];
@@ -52,6 +53,14 @@ app.controller('MovieCRUDCtrl', ['$scope','MovieCRUDService','$mdToast', functio
         };
     };
     $scope.clearMovie();
+
+    $scope.openTabXML = function (id) {
+        $window.open('http://localhost:8080/movies/'+id, '_blank');
+    };
+
+    $scope.openTabJSON = function (id) {
+        $window.open('http://localhost:8080/movies/'+id, '_blank');
+    };
 
     $scope.addActor = function(){
         $scope.movie.actors.push({
