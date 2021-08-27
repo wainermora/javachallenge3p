@@ -1,11 +1,14 @@
 package com.challlenge.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
@@ -19,6 +22,8 @@ import java.util.Set;
 @Entity
 public class Movie   extends BaseEntity implements Serializable {
     @Column
+    @NotNull
+    @NotEmpty
     private String title;
 
     @Column
@@ -28,6 +33,7 @@ public class Movie   extends BaseEntity implements Serializable {
     private double rated;
 
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
     private Calendar released;
 
     @Column
@@ -51,6 +57,8 @@ public class Movie   extends BaseEntity implements Serializable {
     private Set<Actor> actors;
 
     @Column
+    @NotNull
+    @NotEmpty
     private String plot;
 
     @ManyToMany
