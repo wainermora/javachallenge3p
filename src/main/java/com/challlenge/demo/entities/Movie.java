@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "movies")
 @Entity
+@XmlRootElement
 public class Movie   extends BaseEntity implements Serializable {
     @Column
     @NotNull
@@ -30,7 +32,7 @@ public class Movie   extends BaseEntity implements Serializable {
     private int year;
 
     @Column
-    private double rated;
+    private String rated;
 
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
@@ -44,12 +46,12 @@ public class Movie   extends BaseEntity implements Serializable {
     private Genre genre;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="director")
     private Director director;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "movie_actors",
             joinColumns = @JoinColumn(name = "movie_id"),

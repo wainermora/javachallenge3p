@@ -1,0 +1,13 @@
+body {
+    background: #000000;
+    color: white !important;
+    font-family: monospace;
+}
+
+
+h3 {
+    padding: 12px;
+    border-top-right-radius: 20px;
+    font-weight: bolder;
+    letter-spacing: .1em;
+}

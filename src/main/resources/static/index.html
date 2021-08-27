@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Java Challenge3P</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <script src="angular/angular.min.js" ></script>
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 1.2.1 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.js"></script>
+    <script src="sockjs-client/sockjs.min.js"></script>
+    <script src="stomp-websocket/stomp.min.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+    <script src="app.js"></script>
+</head>
+<body>
+<md-content md-theme="docs-dark">
+<div layout="row" layout-xs="column" md-theme="docs-dark"  ng-controller="MovieCRUDCtrl" >
+    <div flex="" layout="column">
+        <md-content md-theme="docs-dark"  layout-padding>
+            <md-card md-theme="docs-dark"  md-theme-watch>
+                <md-card-content layout="column" layout-align="space-between">
+                    <md-input-container>
+                        <label>Title</label>
+                        <input ng-model="movie.title">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Year</label>
+                        <input ng-model="movie.year">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Rated</label>
+                        <input ng-model="movie.rated">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Released</label>
+                        <md-datepicker ng-model="movie.released" md-placeholder="Enter release date"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Runtime</label>
+                        <input ng-model="movie.runtime">
+                    </md-input-container>
+
+                    <md-input-container  class="md-block">
+                        <label>Plot</label>
+                        <textarea ng-model="movie.plot" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Gender</label>
+                        <md-select ng-model-options="{trackBy: '$value.id'}" ng-model="movie.genre">
+                            <md-option ng-disabled="true"><em>None</em></md-option>
+                            <md-option ng-repeat="gen in genres" ng-value="gen">
+                                {{gen.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Languajes</label>
+                        <md-select ng-model-options="{trackBy: '$value.id'}" ng-model="movie.languajes" multiple>
+                            <md-option ng-disabled="true"><em>None</em></md-option>
+                            <md-option ng-repeat="lan in languajes" ng-value="lan">
+                                {{lan.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>imdb Rating</label>
+                        <input ng-model="movie.imdbRating">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Type</label>
+                        <input ng-model="movie.type">
+                    </md-input-container>
+
+                    <md-subheader class="md-no-sticky">Director</md-subheader>
+
+                        <div layout-gt-sm="row">
+
+                            <md-input-container>
+                                <label>First Name</label>
+                                <input ng-model="movie.director.firstName">
+                            </md-input-container>
+
+
+                            <md-input-container>
+                                <label>Last Name</label>
+                                <input ng-model="movie.director.lastName">
+                            </md-input-container>
+
+
+                            <md-input-container>
+                                <label>Code</label>
+                                <input ng-model="movie.director.code">
+                            </md-input-container>
+
+                        </div>
+
+                    <md-subheader class="md-no-sticky">Actors</md-subheader>
+
+                        <div layout-gt-sm="row"  ng-repeat="actor in movie.actors" >
+
+                            <md-input-container>
+                                <label>First Name</label>
+                                <input ng-model="actor.firstName">
+                            </md-input-container>
+
+
+                            <md-input-container>
+                                <label>Last Name</label>
+                                <input ng-model="actor.lastName">
+                            </md-input-container>
+
+
+                            <md-input-container>
+                                <label>Code</label>
+                                <input ng-model="actor.code">
+                            </md-input-container>
+                        </div>
+                        <md-button class="md-raised" ng-click="addActor()" type="button">Add Actor</md-button>
+
+
+
+
+
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button  class="md-raised" ng-click="clearMovie()">Clear</md-button>
+                    <md-button md-no-ink class="md-primary" ng-click="saveUpdateMovie()">Save</md-button>
+                </md-card-actions>
+
+            </md-card>
+
+
+        </md-content>
+    </div>
+    <div flex="">
+        <md-content md-theme="docs-dark"  layout-padding>
+            <md-card md-theme="docs-dark"  md-theme-watch>
+                <md-card-title-text>
+                    <span class="md-headline">Movies</span>
+                </md-card-title-text>
+
+                <md-list flex>
+                    <md-list-item class="md-3-line md-long-text" ng-repeat="movie in movies" ng-click="setMovie(movie)">
+                        <div class="md-list-item-text" layout="column">
+                            <h3>{{ movie.title }}</h3>
+                            <h4>{{ movie.year }}</h4>
+                            <p>{{ movie.plot }}</p>
+                        </div>
+                        <md-button class="md-secondary md-icon-button" ng-click=""  aria-label="call">
+                            XML
+                        </md-button>
+                        <md-button class="md-secondary md-icon-button" ng-click=""  aria-label="call">
+                            JSON
+                        </md-button>
+                    </md-list-item>
+                </md-list>
+            </md-card>
+
+
+        </md-content>
+    </div>
+
+</div>
+</md-content>
+</body>
+</html>

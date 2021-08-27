@@ -28,7 +28,7 @@ public class MovieController {
         return ResponseEntity.status(200).body(movieRepository.findAll());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}",produces = { "application/json", "application/xml" } )
     public ResponseEntity getMovie(@PathVariable Long id){
         Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
         return ResponseEntity.status(HttpStatus.OK).body(movie);
